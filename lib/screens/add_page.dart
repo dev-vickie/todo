@@ -1,9 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:todo_app/models/model.dart';
 
 class AddTodo extends StatefulWidget {
-  const AddTodo({super.key});
+  final Map? todo;
+  const AddTodo({
+    Key? key,
+    this.todo,
+  }) : super(key: key);
 
   @override
   State<AddTodo> createState() => _AddTodoState();
@@ -12,6 +18,20 @@ class AddTodo extends StatefulWidget {
 class _AddTodoState extends State<AddTodo> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  bool isEdit = false;
+  @override
+  void initState() {
+    super.initState();
+    final todo = widget.todo;
+    if (todo != null) {
+      isEdit = true;
+      final title = todo['title'];
+      final description = todo['description'];
+      titleController.text = title;
+      descriptionController.text = description;
+    }
+  }
+
   @override
   void dispose() {
     titleController.dispose();
@@ -19,62 +39,12 @@ class _AddTodoState extends State<AddTodo> {
     super.dispose();
   }
 
-  Future<void> submitData() async {
-    final title = titleController.text;
-    final description = descriptionController.text;
-
-    TodoItem body =
-        TodoItem(title: title, description: description, is_completed: false);
-
-    const url = 'http://api.nstack.in/v1/todos';
-    final uri = Uri.parse(url);
-    final response = await http.post(
-      uri,
-      //toJson instead of jsonDecode
-      body: body.toJson(),
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': 'application/json'
-      },
-    );
-    //Declare these before calling them
-    void showSuccessMessage(String message) {
-      final snackBar = SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.green,
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-
-    void showErrorMessage(String message) {
-      final snackBar = SnackBar(
-        content: Text(
-          message,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 30,
-          ),
-        ),
-        backgroundColor: Colors.red,
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-
-    if (response.statusCode == 201) {
-      showSuccessMessage('Creation Success');
-      titleController.text = '';
-      descriptionController.text = '';
-    } else {
-      showErrorMessage("Creation Error");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Add Todo'),
+        title: Text(isEdit ? "Edit Todo" : "Add Todo"),
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
@@ -95,11 +65,92 @@ class _AddTodoState extends State<AddTodo> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: submitData,
-            child: const Text('Submit'),
+            onPressed: isEdit ? updateData : submitData,
+            child: Text(isEdit ? 'Update' : 'Submit'),
           )
         ],
       ),
     );
+  }
+
+//--------UPDATE DATA---
+  Future<void> updateData() async {
+    final title = titleController.text;
+    final description = descriptionController.text;
+
+    TodoItem body =
+        TodoItem(title: title, description: description, is_completed: false);
+    final todo = widget.todo;
+
+    final id = todo?['_id'];
+    final url = 'http://api.nstack.in/v1/todos/$id';
+    final uri = Uri.parse(url);
+    final response = await http.put(
+      uri,
+      //toJson instead of jsonDecode
+      body: body.toJson(),
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json'
+      },
+    );
+    if (response.statusCode == 200) {
+      showSuccessMessage('Creation Success');
+    } else {
+      showErrorMessage("Creation Error");
+    }
+  }
+
+//--------SUBMIT DATA---
+  Future<void> submitData() async {
+    //Get data from controllers and assign to model
+    final title = titleController.text;
+    final description = descriptionController.text;
+
+    TodoItem body =
+        TodoItem(title: title, description: description, is_completed: false);
+    //Post Data to API
+    const url = 'http://api.nstack.in/v1/todos';
+    final uri = Uri.parse(url);
+    final response = await http.post(
+      uri,
+      body: body.toJson(),
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': 'application/json'
+      },
+    );
+
+    if (response.statusCode == 201) {
+      showSuccessMessage('Creation Success');
+      titleController.text = '';
+      descriptionController.text = '';
+    } else {
+      showErrorMessage("Creation Error");
+    }
+  }
+
+//Error Message
+  void showErrorMessage(String message) {
+    final snackBar = SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 30,
+        ),
+      ),
+      backgroundColor: Colors.red,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+//Success Message
+  void showSuccessMessage(String message) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.green,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

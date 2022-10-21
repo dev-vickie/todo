@@ -19,20 +19,24 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _navigateToAddPage() async {
     final route = MaterialPageRoute(
-      builder: (context) => const AddTodo(),
+      builder: (context) => AddTodo(),
     );
-    Navigator.of(context).push(route);
+    await Navigator.of(context).push(route);
     setState(() {
       isLoading = true;
     });
     fetchApi();
   }
 
-  void _navigateToEditPage() {
+  Future<void> _navigateToEditPage(Map item) async {
     final route = MaterialPageRoute(
-      builder: (context) => const AddTodo(),
+      builder: (context) => AddTodo(todo: item),
     );
-    Navigator.of(context).push(route);
+    await Navigator.of(context).push(route);
+    setState(() {
+      isLoading = true;
+      fetchApi();
+    });
   }
 
   @override
@@ -64,6 +68,7 @@ class _HomePageState extends State<HomePage> {
                   onSelected: (value) {
                     if (value == 'edit') {
                       //Open Edit page
+                      _navigateToEditPage(item);
                     } else if (value == 'delete') {
                       //Delete and remove item
                       deleteById(id);
