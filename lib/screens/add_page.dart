@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:todo_app/models/model.dart';
+import 'package:todo_app/utils/snackbar_helper.dart';
 
 class AddTodo extends StatefulWidget {
   final Map? todo;
@@ -73,7 +74,6 @@ class _AddTodoState extends State<AddTodo> {
     );
   }
 
-//--------UPDATE DATA---
   Future<void> updateData() async {
     final title = titleController.text;
     final description = descriptionController.text;
@@ -97,19 +97,17 @@ class _AddTodoState extends State<AddTodo> {
     if (response.statusCode == 200) {
       showSuccessMessage('Creation Success');
     } else {
-      showErrorMessage("Creation Error");
+      showErrorMessage(context, message: "Creation Error");
     }
   }
 
-//--------SUBMIT DATA---
   Future<void> submitData() async {
-    //Get data from controllers and assign to model
     final title = titleController.text;
     final description = descriptionController.text;
 
     TodoItem body =
         TodoItem(title: title, description: description, is_completed: false);
-    //Post Data to API
+
     const url = 'http://api.nstack.in/v1/todos';
     final uri = Uri.parse(url);
     final response = await http.post(
@@ -126,23 +124,8 @@ class _AddTodoState extends State<AddTodo> {
       titleController.text = '';
       descriptionController.text = '';
     } else {
-      showErrorMessage("Creation Error");
+      showErrorMessage(context, message: 'Something went wrong');
     }
-  }
-
-//Error Message
-  void showErrorMessage(String message) {
-    final snackBar = SnackBar(
-      content: Text(
-        message,
-        style: const TextStyle(
-          color: Colors.black,
-          fontSize: 30,
-        ),
-      ),
-      backgroundColor: Colors.red,
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
 //Success Message
