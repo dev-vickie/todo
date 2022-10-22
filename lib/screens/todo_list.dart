@@ -1,6 +1,5 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:todo_app/screens/add_page.dart';
 import 'package:todo_app/services/todo_service.dart';
 import 'package:todo_app/utils/snackbar_helper.dart';
@@ -26,8 +25,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 202, 60, 103),
       appBar: AppBar(
-        title: const Text('Todo App'),
+        backgroundColor: Color.fromARGB(255, 204, 41, 90),
+        title: Text(
+          'Todo App',
+          style: GoogleFonts.chewy(fontSize: 25),
+        ),
       ),
       body: Visibility(
         visible: isLoading,
@@ -36,10 +40,11 @@ class _HomePageState extends State<HomePage> {
           child: Visibility(
             visible: items.isNotEmpty,
             replacement: Center(
-                child: Text(
-              "No todo item",
-              style: Theme.of(context).textTheme.headline3,
-            )),
+              child: Text(
+                "No todo item",
+                style: Theme.of(context).textTheme.headline3,
+              ),
+            ),
             child: ListView.builder(
               padding: const EdgeInsets.all(8),
               itemCount: items.length,
@@ -94,7 +99,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _navigateToAddPage() async {
     final route = MaterialPageRoute(
-      builder: (context) => AddTodo(),
+      builder: (context) => const AddTodo(),
     );
     await Navigator.of(context).push(route);
     setState(() {
