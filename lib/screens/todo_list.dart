@@ -25,13 +25,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 202, 60, 103),
+      backgroundColor: const Color.fromARGB(255, 202, 60, 103),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 204, 41, 90),
-        title: Text(
-          'Todo App',
-          style: GoogleFonts.chewy(fontSize: 25),
-        ),
+        backgroundColor: const Color.fromARGB(255, 204, 41, 90),
+        centerTitle: true,
+        title: Text('Todo App'),
       ),
       body: Visibility(
         visible: isLoading,
@@ -63,10 +61,14 @@ class _HomePageState extends State<HomePage> {
         child: const Center(child: CircularProgressIndicator()),
       ),
       floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.grey[300],
         onPressed: () {
           _navigateToAddPage();
         },
-        label: const Text('Add Todo'),
+        label: Text(
+          'Add Todo',
+          style: GoogleFonts.chewy(color: Colors.pink[600]),
+        ),
       ),
     );
   }

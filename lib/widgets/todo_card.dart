@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TodoCard extends StatelessWidget {
   final int index;
@@ -19,10 +20,23 @@ class TodoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final id = item['_id'] as String;
     return Card(
+      color: Colors.grey[300],
       child: ListTile(
-        leading: CircleAvatar(child: Text('${index + 1}')),
-        title: Text(item['title']),
-        subtitle: Text(item['description']),
+        leading: CircleAvatar(
+          backgroundColor: Color.fromARGB(255, 204, 41, 90),
+          child: Text(
+            '${index + 1}',
+            style: GoogleFonts.chewy(fontSize: 25),
+          ),
+        ),
+        title: Text(
+          item['title'],
+          style: GoogleFonts.chewy(fontSize: 20, color: Colors.black),
+        ),
+        subtitle: Text(
+          item['description'],
+          style: GoogleFonts.chewy(),
+        ),
         trailing: PopupMenuButton(
           onSelected: (value) {
             if (value == 'edit') {
@@ -36,12 +50,14 @@ class TodoCard extends StatelessWidget {
           itemBuilder: (context) {
             return [
               PopupMenuItem(
+                textStyle: GoogleFonts.chewy(color: Colors.black),
                 value: 'edit',
                 child: Text(
                   'Edit',
                 ),
               ),
               PopupMenuItem(
+                textStyle: GoogleFonts.chewy(color: Colors.black),
                 value: 'delete',
                 child: Text(
                   'Delete',

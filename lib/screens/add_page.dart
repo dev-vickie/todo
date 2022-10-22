@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:todo_app/models/model.dart';
@@ -43,6 +44,7 @@ class _AddTodoState extends State<AddTodo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 202, 60, 103),
       appBar: AppBar(
         centerTitle: true,
         title: Text(isEdit ? "Edit Todo" : "Add Todo"),
@@ -52,7 +54,8 @@ class _AddTodoState extends State<AddTodo> {
         children: [
           TextField(
             controller: titleController,
-            decoration: const InputDecoration(hintText: 'Title'),
+            decoration: InputDecoration(
+                hintText: 'Title', hintStyle: GoogleFonts.chewy()),
           ),
           const SizedBox(height: 20),
           TextField(
@@ -60,13 +63,14 @@ class _AddTodoState extends State<AddTodo> {
             keyboardType: TextInputType.multiline,
             minLines: 5,
             maxLines: 8,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: 'Description',
+              hintStyle: GoogleFonts.chewy(),
             ),
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: isEdit ? updateData : submitData,
+            onPressed: (isEdit ? updateData : submitData),
             child: Text(isEdit ? 'Update' : 'Submit'),
           )
         ],

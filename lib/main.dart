@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:todo_app/screens/todo_list.dart';
 
 void main() {
@@ -11,9 +12,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      theme: ThemeData(
+        hintColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          titleTextStyle: GoogleFonts.chewy(fontSize: 28),
+          backgroundColor: Color.fromARGB(255, 204, 41, 90),
+        ),
+      ),
+      home: const HomePage(),
     );
   }
 }
