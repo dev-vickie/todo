@@ -9,7 +9,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,9 +17,10 @@ class MyApp extends StatelessWidget {
         hintColor: Colors.white,
         appBarTheme: AppBarTheme(
           titleTextStyle: GoogleFonts.chewy(fontSize: 28),
-          backgroundColor: Color.fromARGB(255, 204, 41, 90),
+          backgroundColor: const Color.fromARGB(255, 204, 41, 90),
         ),
       ),
+      //HomePage = todo_list.dart
       home: const HomePage(),
     );
   }

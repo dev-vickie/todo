@@ -24,6 +24,7 @@ class _AddTodoState extends State<AddTodo> {
   @override
   void initState() {
     super.initState();
+    //Logic to switch between add todo and edit todo
     final todo = widget.todo;
     if (todo != null) {
       isEdit = true;
@@ -70,6 +71,7 @@ class _AddTodoState extends State<AddTodo> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
+            //Initially isEdit = False
             onPressed: (isEdit ? updateData : submitData),
             child: Text(isEdit ? 'Update' : 'Submit'),
           )
@@ -78,12 +80,14 @@ class _AddTodoState extends State<AddTodo> {
     );
   }
 
+//-------Services
+
   Future<void> updateData() async {
     final title = titleController.text;
     final description = descriptionController.text;
 
     TodoItem body =
-        TodoItem(title: title, description: description, is_completed: false);
+        TodoItem(title: title, description: description, isCompleted: false);
     final todo = widget.todo;
 
     final id = todo?['_id'];
@@ -91,7 +95,7 @@ class _AddTodoState extends State<AddTodo> {
     final uri = Uri.parse(url);
     final response = await http.put(
       uri,
-      //toJson instead of jsonDecode
+      //toJson instead of jsonDecode-from Model
       body: body.toJson(),
       headers: {
         'Content-Type': 'application/json',
@@ -110,7 +114,7 @@ class _AddTodoState extends State<AddTodo> {
     final description = descriptionController.text;
 
     TodoItem body =
-        TodoItem(title: title, description: description, is_completed: false);
+        TodoItem(title: title, description: description, isCompleted: false);
 
     const url = 'http://api.nstack.in/v1/todos';
     final uri = Uri.parse(url);
@@ -126,7 +130,8 @@ class _AddTodoState extends State<AddTodo> {
     if (response.statusCode == 201) {
       showSuccessMessage('Creation Success');
       titleController.text = '';
-      descriptionController.text = '';
+      descriptionController.text = ''; //Empty the controllers after submission
+      //_navigateToHomePage();
     } else {
       showErrorMessage(context, message: 'Something went wrong');
     }
@@ -140,4 +145,11 @@ class _AddTodoState extends State<AddTodo> {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+
+  // Future<void> _navigateToHomePage() async {
+  //   final route = MaterialPageRoute(
+  //     builder: (context) => const HomePage(),
+  //   );
+  //   await Navigator.of(context).push(route);
+  // }
 }

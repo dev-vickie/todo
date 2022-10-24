@@ -29,10 +29,12 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 204, 41, 90),
         centerTitle: true,
-        title: Text('Todo App'),
+        title: const Text('Todo App'),
       ),
       body: Visibility(
         visible: isLoading,
+        // ignore: sort_child_properties_last
+        child: const Center(child: CircularProgressIndicator()),
         replacement: RefreshIndicator(
           onRefresh: fetchApi,
           child: Visibility(
@@ -48,17 +50,17 @@ class _HomePageState extends State<HomePage> {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = items[index] as Map;
-                final id = item['_id'];
+                // final id = item['_id'];
                 return TodoCard(
-                    index: index,
-                    item: item,
-                    navigateEdit: _navigateToEditPage,
-                    deleteByID: deleteById);
+                  index: index,
+                  item: item,
+                  navigateEdit: _navigateToEditPage,
+                  deleteByID: deleteById,
+                );
               },
             ),
           ),
         ),
-        child: const Center(child: CircularProgressIndicator()),
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.grey[300],
@@ -72,6 +74,8 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+//---------Services
 
   Future<void> deleteById(id) async {
     final isSuccess = await TodoService.deleteById(id);

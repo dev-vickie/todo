@@ -23,7 +23,7 @@ class TodoCard extends StatelessWidget {
       color: Colors.grey[300],
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Color.fromARGB(255, 204, 41, 90),
+          backgroundColor: const Color.fromARGB(255, 204, 41, 90),
           child: Text(
             '${index + 1}',
             style: GoogleFonts.chewy(fontSize: 25),
@@ -52,14 +52,14 @@ class TodoCard extends StatelessWidget {
               PopupMenuItem(
                 textStyle: GoogleFonts.chewy(color: Colors.black),
                 value: 'edit',
-                child: Text(
+                child: const Text(
                   'Edit',
                 ),
               ),
               PopupMenuItem(
                 textStyle: GoogleFonts.chewy(color: Colors.black),
                 value: 'delete',
-                child: Text(
+                child: const Text(
                   'Delete',
                 ),
               ),

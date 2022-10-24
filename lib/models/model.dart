@@ -3,18 +3,18 @@ import 'dart:convert';
 class TodoItem {
   String title;
   String description;
-  bool is_completed;
+  bool isCompleted;
   TodoItem({
     required this.title,
     required this.description,
-    required this.is_completed,
+    required this.isCompleted,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'title': title,
       'description': description,
-      'is_completed': is_completed,
+      'isCompleted': isCompleted,
     };
   }
 
@@ -22,7 +22,7 @@ class TodoItem {
     return TodoItem(
       title: map['title'] as String,
       description: map['description'] as String,
-      is_completed: map['is_completed'] as bool,
+      isCompleted: map['isCompleted'] as bool,
     );
   }
 
