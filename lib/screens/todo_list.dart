@@ -29,8 +29,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 204, 41, 90),
         centerTitle: true,
-        title: const Text('Todo App'),
+        title: const Text('My Journal'),
       ),
+      drawer: const Drawer(),
       body: Visibility(
         visible: isLoading,
         // ignore: sort_child_properties_last
@@ -50,7 +51,7 @@ class _HomePageState extends State<HomePage> {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = items[index] as Map;
-                // final id = item['_id'];
+
                 return TodoCard(
                   index: index,
                   item: item,
@@ -68,14 +69,14 @@ class _HomePageState extends State<HomePage> {
           _navigateToAddPage();
         },
         label: Text(
-          'Add Todo',
+          'Add note',
           style: GoogleFonts.chewy(color: Colors.pink[600]),
         ),
       ),
     );
   }
 
-//---------Services
+//---------Services-----
 
   Future<void> deleteById(id) async {
     final isSuccess = await TodoService.deleteById(id);

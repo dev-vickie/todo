@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: const Color.fromARGB(255, 204, 41, 90),
         ),
       ),
-      //HomePage = todo_list.dart
+      //HomePage() = todo_list.dart
       home: const HomePage(),
     );
   }
